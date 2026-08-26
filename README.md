@@ -1,6 +1,7 @@
 # ModularSQL
 
 A post-selection runtime guardrail for the **Multiplicity Blind Spot** in Text-to-SQL.
+Companion code for the paper.
 
 ModularSQL probes the executed result of each selected SQL query for multiplicity
 anomalies and applies targeted interventions (deterministic patches + low-cost LLM
