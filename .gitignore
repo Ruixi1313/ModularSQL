@@ -1,0 +1,37 @@
+.env
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# Resolved config files (contain real API keys)
+*.resolved.toml
+
+# Vendored upstream repo (DeepEye-SQL -- clone separately into external/)
+external/
+
+# BIRD dataset and all symlinks under data/
+data/
+
+# All experiment results (reproducible from scripts)
+results/
+
+# Internal planning and review documents
+docs/rebuttal*/
+docs/camera_ready_todo.md
+docs/resubmission_plan.md
+docs/SETUP_PLAN.md
+
+# Holdout/stratified sample data
+experiments/holdout_100.json
+experiments/stratified_sample_100.json
+
+# GPT-4o subset runner (uses private API key)
+scripts/run_gpt4o_subset.sh
+
+# OS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/

@@ -1,0 +1,145 @@
+########################################################################
+# ModularSQL config — GPT-4o robustness subset (n=99, 9 per DB × 11 DBs)
+#
+# Purpose: Cross-backbone robustness study for paper Limitations section.
+# Run the same DeepEye pipeline using GPT-4o (instead of Qwen3-Coder),
+# on a stratified subset of dev1534, to test whether our plugin layer
+# transfers across backbones.
+#
+# Cost estimate: ~$33 + 20% buffer = $40 budget
+# Time estimate: 30-90 min wall-clock (depending on OpenAI parallelism)
+#
+# IMPORTANT: provide OPENAI_API_KEY via .env; resolved via env-substitution.
+# Workspace is ISOLATED: workspace_gpt4o_subset/ to not contaminate
+# workspace_full/ from the Qwen run.
+########################################################################
+
+[logger]
+print_level = "INFO"
+
+[dataset]
+type = "bird"
+split = "dev"
+root_path = "data/bird"
+save_path = "workspace_gpt4o_subset/dataset/bird/dev.snapshot"
+
+# Stratified subset: 11 DBs × 5 samples = 55 total (downgraded from 9; core
+# thesis is already cross-backbone validated by Qwen2.5/3 + Gemma3 reproduction)
+max_samples_per_db = 5
+
+########################################################################
+# Vector database — LOCAL embeddings (reused; identical to Qwen run)
+########################################################################
+[vector_database]
+api_type = "local"
+embedding_model_name_or_path = "sentence-transformers/all-MiniLM-L6-v2"
+store_root_path = "workspace_gpt4o_subset/vector_database/bird/dev"
+embedding_device = "auto"
+max_value_length = 100
+lower_meta_data = true
+batch_size = 128
+db_parallel = 2
+column_parallel = 4
+build_backend = "local_index"
+
+########################################################################
+# Stage 1: Value Retrieval
+########################################################################
+[value_retrieval]
+n_results = 5
+n_parallel = 8                  # lower than Qwen (16) to respect OpenAI rate limits
+query_parallel_per_sample = 8
+backend = "local_index"
+local_index_device = "auto"
+save_path = "workspace_gpt4o_subset/value_retrieval/bird/dev.snapshot"
+
+[value_retrieval.llm]
+model = "gpt-4o-2024-11-20"
+base_url = "https://api.openai.com/v1"
+api_key = "${OPENAI_API_KEY}"
+max_tokens = 4096
+temperature = 0.7
+api_type = "openai"
+max_model_len = 128000
+
+########################################################################
+# Stage 2: Schema Linking
+########################################################################
+[schema_linking]
+n_parallel = 8
+n_internal_parallel = 4
+save_path = "workspace_gpt4o_subset/schema_linking/bird/dev.snapshot"
+direct_linking_sampling_budget = 4
+reversed_linking_sampling_budget = 4
+value_distance_threshold = 0.02
+
+[schema_linking.llm]
+model = "gpt-4o-2024-11-20"
+base_url = "https://api.openai.com/v1"
+api_key = "${OPENAI_API_KEY}"
+max_tokens = 4096
+temperature = 0.7
+api_type = "openai"
+max_model_len = 128000
+
+########################################################################
+# Stage 3: SQL Generation
+########################################################################
+[sql_generation]
+n_parallel = 8
+n_internal_parallel = 4
+save_path = "workspace_gpt4o_subset/sql_generation/bird/dev.snapshot"
+dc_sampling_budget = 4
+skeleton_sampling_budget = 4
+icl_sampling_budget = 4
+icl_few_shot_examples_path = "results/bird_dev_few_shots.json"
+
+[sql_generation.llm]
+model = "gpt-4o-2024-11-20"
+base_url = "https://api.openai.com/v1"
+api_key = "${OPENAI_API_KEY}"
+max_tokens = 4096
+temperature = 0.7
+api_type = "openai"
+max_model_len = 128000
+
+########################################################################
+# Stage 4: SQL Revision
+########################################################################
+[sql_revision]
+n_parallel = 8
+n_internal_parallel = 8
+save_path = "workspace_gpt4o_subset/sql_revision/bird/dev.snapshot"
+checker_sampling_budget = 3
+
+[sql_revision.llm]
+model = "gpt-4o-2024-11-20"
+base_url = "https://api.openai.com/v1"
+api_key = "${OPENAI_API_KEY}"
+max_tokens = 4096
+temperature = 0.7
+api_type = "openai"
+max_model_len = 128000
+
+########################################################################
+# Stage 5: SQL Selection
+########################################################################
+[sql_selection]
+n_parallel = 8
+n_internal_parallel = 4
+save_path = "workspace_gpt4o_subset/sql_selection/bird/dev.snapshot"
+filter_top_k_sql = 3
+evaluator_sampling_budget = 5
+shortcut_consistency_score_threshold = 0.6
+
+[sql_selection.llm]
+model = "gpt-4o-2024-11-20"
+base_url = "https://api.openai.com/v1"
+api_key = "${OPENAI_API_KEY}"
+max_tokens = 4096
+temperature = 0.7
+api_type = "openai"
+max_model_len = 128000
+
+[llm_extractor]
+max_retry = 5
