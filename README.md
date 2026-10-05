@@ -1,7 +1,10 @@
 # ModularSQL
 
 A post-selection runtime guardrail for the **Multiplicity Blind Spot** in Text-to-SQL.
-Companion code for the paper.
+Companion code for [**ModularSQL: A Runtime Guardrail for the Multiplicity Blind Spot in Text-to-SQL**](https://arxiv.org/abs/2609.29573)
+by Tianxin Zhou and Ruixi Lin (2026).
+
+[Paper](https://arxiv.org/abs/2609.29573) · [PDF](https://arxiv.org/pdf/2609.29573) · [Citation](#citation)
 
 ModularSQL probes the executed result of each selected SQL query for multiplicity
 anomalies and applies targeted interventions (deterministic patches + low-cost LLM
@@ -143,3 +146,42 @@ ModularSQL/
 ├── data/                         # BIRD dataset (gitignored)
 └── docs/
 ```
+
+## Citation
+
+If you use ModularSQL in your research, please cite the paper:
+
+```bibtex
+@misc{zhou2026modularsql,
+  title         = {{ModularSQL}: A Runtime Guardrail for the Multiplicity Blind Spot in {Text-to-SQL}},
+  author        = {Tianxin Zhou and Ruixi Lin},
+  year          = {2026},
+  eprint        = {2609.29573},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.CL},
+  url           = {https://arxiv.org/abs/2609.29573}
+}
+```
+
+Machine-readable citation metadata is available in [CITATION.cff](CITATION.cff),
+with the paper set as the preferred citation. For reproducibility, also record
+the repository commit and any upstream data or model versions you used.
+
+## License and third-party materials
+
+The original ModularSQL source code, configuration files, and associated
+repository documentation are licensed under the [MIT License](LICENSE), unless
+a file states otherwise. Preserve all applicable copyright and license notices.
+
+The companion paper, benchmark data, third-party software, and model weights
+retain their own terms and are not relicensed by this repository:
+
+- **DeepEye-SQL** is obtained separately. Preserve its
+  [upstream license and copyright notice](https://github.com/HKUSTDial/DeepEye-SQL/blob/master/LICENSE).
+- **BIRD data** is obtained separately and is subject to the terms published by
+  [BIRD](https://bird-bench.github.io/), including its CC BY-SA 4.0 data license.
+- Other dependencies and model weights remain subject to their respective
+  licenses and terms.
+
+The citation request above is for academic attribution; it is not an additional
+condition of the MIT License.
