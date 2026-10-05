@@ -1,0 +1,34 @@
+cff-version: 1.2.0
+message: >-
+  If you use ModularSQL in your research, please cite the paper in preferred-citation.
+type: software
+license: MIT
+title: ModularSQL
+authors:
+  - family-names: Zhou
+    given-names: Tianxin
+  - family-names: Lin
+    given-names: Ruixi
+repository-code: "https://github.com/Ruixi1313/ModularSQL"
+url: "https://github.com/Ruixi1313/ModularSQL"
+keywords:
+  - Text-to-SQL
+  - SQL multiplicity
+  - Runtime guardrails
+  - Multiset evaluation
+preferred-citation:
+  type: article
+  title: "ModularSQL: A Runtime Guardrail for the Multiplicity Blind Spot in Text-to-SQL"
+  authors:
+    - family-names: Zhou
+      given-names: Tianxin
+    - family-names: Lin
+      given-names: Ruixi
+  year: 2026
+  status: preprint
+  url: "https://arxiv.org/abs/2609.29573"
+  identifiers:
+    - type: other
+      value: "arXiv:2609.29573"
+      description: arXiv identifier
+  notes: "arXiv preprint, cs.CL"
