@@ -1,0 +1,11 @@
+One customer name per purchase (duplicates required)
+  reference: [('Ada',), ('Ada',), ('Bo',)]
+  candidate: [('Ada',), ('Bo',)]
+  set_equal: True
+  bag_equal: False
+
+Unique customer names (duplicates unwanted)
+  reference: [('Ada',), ('Bo',)]
+  candidate: [('Ada',), ('Ada',), ('Bo',)]
+  set_equal: True
+  bag_equal: False

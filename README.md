@@ -4,11 +4,25 @@ A post-selection runtime guardrail for the **Multiplicity Blind Spot** in Text-t
 Companion code for [**ModularSQL: A Runtime Guardrail for the Multiplicity Blind Spot in Text-to-SQL**](https://arxiv.org/abs/2609.29573)
 by Tianxin Zhou and Ruixi Lin (2026).
 
-[Paper](https://arxiv.org/abs/2609.29573) · [PDF](https://arxiv.org/pdf/2609.29573) · [Citation](#citation)
+[Paper](https://arxiv.org/abs/2609.29573) · [PDF](https://arxiv.org/pdf/2609.29573) · [Research page](https://research.searcher.cloud/papers/modularsql/) · [Citation](#citation)
 
 ModularSQL probes the executed result of each selected SQL query for multiplicity
 anomalies and applies targeted interventions (deterministic patches + low-cost LLM
 rescue) only on flagged queries, leaving unaffected queries unchanged.
+
+## Quickstart: synthetic multiplicity example
+
+Try the dependency-free [SQLite example](examples/multiplicity/) to see why
+set-based comparison can hide missing or extra duplicate rows:
+
+```bash
+python3 examples/multiplicity/demo.py
+python3 -m unittest discover -s examples/multiplicity -v
+```
+
+Requires Python 3.9+ with standard-library SQLite. No API key, model, benchmark
+data, or upstream checkout is needed. This illustrates set-versus-bag semantics;
+it does not run the guardrail or reproduce the paper's benchmark results.
 
 ## Canonical Reproduction Scripts
 
